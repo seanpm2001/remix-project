@@ -36,12 +36,32 @@
           "to": "bin/circom-macos-amd64"
         }
       ]
-    }
+    },
+    "win": {
+      "target": [
+        "nsis"
+    ],
+    "artifactName": "Remix-Desktop-Setup-${version}.${ext}",
+    "icon": "assets/icon.png",
+      "extraResources": [
+        {
+          "from": "bin/rustup-init.exe",
+          "to": "bin/rustup-init.exe"
+        }
+      ]
+    },
+    "nsis": {
+      "createDesktopShortcut": "always",
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "shortcutName": "Remix Desktop Windows",
+      "differentialPackage": false
+  }
   },
   "scripts": {
     "start:dev": "yarn webpack --config webpack.config.js && electron --inspect=5858 .",
     "start:production": "cross-env NODE_ENV=production yarn webpack --config webpack.config.js && electron .",
-    "dist": "yarn webpack --config webpack.config.js && electron-builder -p never",
+    "dist": "cross-env NODE_ENV=production yarn webpack --config webpack.config.js && electron-builder -p never -c beta.json",
     "installRipGrepMacOXx64": "rm -rf node_modules/@vscode/ripgrep/bin && npm_config_arch=x64 node node_modules/@vscode/ripgrep/lib/postinstall.js",
     "installRipGrepMacOXarm64": "rm -rf node_modules/@vscode/ripgrep/bin && npm_config_arch=arm64 node node_modules/@vscode/ripgrep/lib/postinstall.js",
     "postinstall": "electron-builder install-app-deps",
